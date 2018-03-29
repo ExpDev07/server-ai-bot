@@ -1,0 +1,5 @@
+name: ServerAiBot
+main: me.expdev.serveraibot.ServerAiBotPlugin
+description: Connects with API.AI
+version: 1.0-SNAPSHOT
+author: ExpDev
