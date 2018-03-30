@@ -1,8 +1,9 @@
 package me.expdev.serveraibot;
 
 import com.sun.net.httpserver.HttpServer;
-import me.expdev.serveraibot.http.action.DefaultWebhookAction;
+import me.expdev.serveraibot.http.HttpExchangeWrapper;
 import me.expdev.serveraibot.http.action.PlayersOnlineAction;
+import me.expdev.serveraibot.http.action.WebhookAction;
 import me.expdev.serveraibot.http.handler.WebhookHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -44,6 +45,10 @@ public class ServerAiBotPlugin extends JavaPlugin {
      * @throws IOException If server could not be started
      */
     private void startHttpServer() throws IOException {
+        // Register a default action
+        WebhookHandler.registerDefaultAction(wrapper -> wrapper.respond("Action not found."));
+
+        // Ready server configurations and start
         HttpServer server = HttpServer.create(new InetSocketAddress(25566), 0);
         server.createContext(WEBHOOK_ENDPOINT, makeHandler());
         server.setExecutor(null); // creates a default executor
@@ -53,8 +58,8 @@ public class ServerAiBotPlugin extends JavaPlugin {
     }
 
     private WebhookHandler makeHandler() {
-        // Create a new handler for webhooks with a default action
-        WebhookHandler handler = new WebhookHandler(new DefaultWebhookAction());
+        // Create a new handler for webhooks
+        WebhookHandler handler = new WebhookHandler();
 
         // Also register all actions
         handler.registerAction("players.online", new PlayersOnlineAction());

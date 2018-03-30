@@ -5,8 +5,8 @@ import me.expdev.serveraibot.http.HttpExchangeWrapper;
 /**
  * A simple action for the webhook endpoint
  */
-public abstract class WebhookAction {
+public interface WebhookAction {
 
-    public abstract void handle(HttpExchangeWrapper wrapper);
+    void handle(HttpExchangeWrapper wrapper);
 
 }

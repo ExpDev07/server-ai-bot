@@ -21,12 +21,8 @@ public class WebhookHandler implements HttpHandler {
     private static final String POST_METHOD = "POST";
 
     // Actions
-    private WebhookAction defaultAction = null;
+    private static WebhookAction defaultAction = null;
     private Map<String, WebhookAction> actions = new HashMap<String, WebhookAction>();
-
-    public WebhookHandler(WebhookAction defaultAction) {
-        this.defaultAction = defaultAction;
-    }
 
     @Override
     public void handle(HttpExchange exc) throws IOException {
@@ -43,8 +39,8 @@ public class WebhookHandler implements HttpHandler {
         // Route to appropriate handler
         WebhookAction action = actions.get(result.get("action").getAsString());
         if (action == null) {
-            // Handle default
-            defaultAction.handle(wrapper);
+            // Not found, handle default if set
+            if (defaultAction != null) defaultAction.handle(wrapper);
             return;
         }
 
@@ -60,6 +56,15 @@ public class WebhookHandler implements HttpHandler {
      */
     public void registerAction(String id, WebhookAction action) {
         actions.put(id, action);
+    }
+
+    /**
+     * Registers a default action
+     *
+     * @param action Action to register
+     */
+    public static void registerDefaultAction(WebhookAction action) {
+        defaultAction = action;
     }
 
 }

@@ -6,7 +6,7 @@ import org.bukkit.Bukkit;
 /**
  * An action to respond with how many players are online
  */
-public class PlayersOnlineAction extends WebhookAction {
+public class PlayersOnlineAction implements WebhookAction {
 
     @Override
     public void handle(HttpExchangeWrapper wrapper) {
